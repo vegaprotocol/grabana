@@ -49,19 +49,15 @@ func New(title string, options ...Option) (*Heatmap, error) {
 		CardRound   *float64 `json:"cardRound"`
 	}{}
 	panel.Builder.HeatmapPanel.Color = struct {
-		CardColor   string   `json:"cardColor"`
-		ColorScale  string   `json:"colorScale"`
-		ColorScheme string   `json:"colorScheme"`
-		Exponent    float64  `json:"exponent"`
-		Min         *float64 `json:"min,omitempty"`
-		Max         *float64 `json:"max,omitempty"`
-		Mode        string   `json:"mode"`
+		CardColor  string  `json:"cardColor"`
+		ColorScale string  `json:"colorScale"`
+		Exponent   float64 `json:"exponent"`
+		Mode       string  `json:"mode"`
 	}{
-		CardColor:   "#b4ff00",
-		ColorScale:  "sqrt",
-		ColorScheme: "interpolateSpectral",
-		Exponent:    0.5,
-		Mode:        "spectrum",
+		CardColor:  "#b4ff00",
+		ColorScale: "sqrt",
+		Exponent:   0.5,
+		Mode:       "spectrum",
 	}
 	panel.Builder.HeatmapPanel.Legend = struct {
 		Show bool `json:"show"`
@@ -340,6 +336,46 @@ func YAxis(opts ...axis.Option) Option {
 func Repeat(repeat string) Option {
 	return func(heatmap *Heatmap) error {
 		heatmap.Builder.Repeat = &repeat
+
+		return nil
+	}
+}
+
+func ColorScheme(name string) Option {
+	return func(heatmap *Heatmap) error {
+		heatmap.Builder.HeatmapPanel.Options.Color.Scheme = name
+
+		return nil
+	}
+}
+
+func ReverseColor(value bool) Option {
+	return func(heatmap *Heatmap) error {
+		heatmap.Builder.HeatmapPanel.Options.Color.Reverse = value
+
+		return nil
+	}
+}
+
+func ColorMin(value float64) Option {
+	return func(heatmap *Heatmap) error {
+		heatmap.Builder.HeatmapPanel.Options.Color.Min = &value
+
+		return nil
+	}
+}
+
+func ColorMax(value float64) Option {
+	return func(heatmap *Heatmap) error {
+		heatmap.Builder.HeatmapPanel.Options.Color.Max = &value
+
+		return nil
+	}
+}
+
+func FilterValuesLE(value float64) Option {
+	return func(heatmap *Heatmap) error {
+		heatmap.Builder.HeatmapPanel.Options.FilterValues.LessOrEqual = &value
 
 		return nil
 	}
